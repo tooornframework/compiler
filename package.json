@@ -1,0 +1,8 @@
+{
+  "name": "compiler",
+  "version": "1.0.0",
+  "main": "./build/index.js",
+  "dependencies": {
+    "ts-morph": "^2.1.0"
+  }
+}
