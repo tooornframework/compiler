@@ -2,15 +2,15 @@ import {TypeSchema} from "./TypeSchema";
 import {QualifiedReference} from "../../common/reference/QualifiedReference";
 import {Schema} from "../Schema";
 
-enum KIND {
+export enum SetSchemaKind {
 	UNION = "UNION",
 	INTERSECTION ="INTERSECTION",
 	TUPLE = "TUPLE"
 }
 
-export class SetScheme extends TypeSchema {
-	public static readonly KIND = KIND;
+export class SetSchema extends TypeSchema {
+	public static readonly KIND = SetSchemaKind;
 
 	readonly members: Array<QualifiedReference<Schema>>;
-	readonly kind: KIND;
+	readonly kind: SetSchemaKind;
 }

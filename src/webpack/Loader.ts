@@ -12,6 +12,11 @@ import {PlainTypeBuilder} from "../collecting/builders/PlainTypeBuilder";
 import {DeclaredTypeBuilder} from "../collecting/builders/DeclaredTypeBuilder";
 import {MethodBuilder} from "../collecting/builders/MethodBuilder";
 import {ParameterBuilder} from "../collecting/builders/ParameterBuilder";
+import {TypeAliasBuilder} from "../collecting/builders/TypeAliasBuilder";
+import {TypeLiteralBuilder} from "../collecting/builders/TypeLiteralBuilder";
+import {SetSchemeBuilder} from "../collecting/builders/SetSchemeBuilder";
+import {TypeParameterBuilder} from "../collecting/builders/TypeParameterBuilder";
+import {TypeParameterReducer} from "../collecting/reducers/TypeParameterReducer";
 
 export class Loader {
 
@@ -30,8 +35,13 @@ export class Loader {
 			.builder(new DeclaredTypeBuilder())
 			.builder(new MethodBuilder())
 			.builder(new ParameterBuilder())
-			.interceptor(new VariableToDeclarationsInterceptor())
+			.builder(new TypeAliasBuilder())
+			.builder(new TypeLiteralBuilder())
+			.builder(new TypeParameterBuilder())
+			.builder(new SetSchemeBuilder())
 			.reducer(new InterfaceReducer())
+			.reducer(new TypeParameterReducer())
+			.interceptor(new VariableToDeclarationsInterceptor())
 			.repository(repository)
 		);
 

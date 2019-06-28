@@ -29,9 +29,9 @@ export class LongNodeQualifier implements Qualifier {
 	}
 
 	public sym(): string {
-		return this.hierarchyChain
+		return "LongNodeQualifier(" + this.hierarchyChain
 			.map(it => it.toString())
-			.join("");
+			.join("") + ")";
 	}
 
 	private getHierarchyChain(node: Node): Array<HierarcyCell> {

@@ -13,7 +13,7 @@ import {TypeParameterSchema} from "../../schema/declarations/TypeParameterSchema
 
 export class MethodBuilder extends GenericNodeBuilder<MethodDeclaration | MethodSignature, MethodSchema> {
 	public match(n: unknown, manager: BuildManager): n is MethodDeclaration | MethodSignature {
-		return n instanceof Node && (TypeGuards.isPropertySignature(n) || TypeGuards.isPropertyDeclaration(n));
+		return n instanceof Node && (TypeGuards.isMethodSignature(n) || TypeGuards.isMethodDeclaration(n));
 	}
 
 	public build(q: Qualifier, n: MethodDeclaration | MethodSignature, manager: BuildManager): MethodSchema {
