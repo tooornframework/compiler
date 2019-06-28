@@ -10,6 +10,8 @@ import {VariableToDeclarationsInterceptor} from "../collecting/interseptors/Vari
 import {InterfaceReducer} from "../collecting/reducers/InterfaceReducer";
 import {PlainTypeBuilder} from "../collecting/builders/PlainTypeBuilder";
 import {DeclaredTypeBuilder} from "../collecting/builders/DeclaredTypeBuilder";
+import {MethodBuilder} from "../collecting/builders/MethodBuilder";
+import {ParameterBuilder} from "../collecting/builders/ParameterBuilder";
 
 export class Loader {
 
@@ -21,14 +23,16 @@ export class Loader {
 		const repository = new Repository();
 
 		const buildManager = BuildManager.configure(conf => conf
-				.builder(new ClassBuilder())
-				.builder(new InterfaceBuilder())
-				.builder(new PropertyBuilder())
-				.builder(new PlainTypeBuilder())
-				.builder(new DeclaredTypeBuilder())
-				.interceptor(new VariableToDeclarationsInterceptor())
-				.reducer(new InterfaceReducer())
-				.repository(repository)
+			.builder(new ClassBuilder())
+			.builder(new InterfaceBuilder())
+			.builder(new PropertyBuilder())
+			.builder(new PlainTypeBuilder())
+			.builder(new DeclaredTypeBuilder())
+			.builder(new MethodBuilder())
+			.builder(new ParameterBuilder())
+			.interceptor(new VariableToDeclarationsInterceptor())
+			.reducer(new InterfaceReducer())
+			.repository(repository)
 		);
 
 		const runner = new Runner(project, buildManager);
