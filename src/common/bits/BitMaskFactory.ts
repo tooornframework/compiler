@@ -2,13 +2,13 @@ import {BitMask} from "./BitMask";
 
 export class BitMaskFactory {
 
-	public static create<T>(action: (factory: BitMaskFactory) => T): T {
-		return action(new BitMaskFactory());
-	}
-
-	private lastPower = 0;
+	private static lastPower: number = 0;
 
 	public next(): BitMask {
-		return new BitMask(Math.pow(2, this.lastPower++));
+		return this.creator(Math.pow(2, BitMaskFactory.lastPower++));
+	}
+
+	public constructor(private creator: (bits: number) => BitMask) {
+
 	}
 }

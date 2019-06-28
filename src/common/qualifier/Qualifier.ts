@@ -1,6 +1,6 @@
-export abstract class Qualifier {
+export interface Qualifier {
 
-	public abstract equals(other: any): boolean;
+	equals(other: any): boolean;
 
-	public abstract hash(): string;
+	sym(): string;
 }

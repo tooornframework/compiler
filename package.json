@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "main": "./build/index.js",
   "dependencies": {
-    "ts-morph": "^2.1.0"
+    "@types/uuid": "^3.4.4",
+    "ts-morph": "^2.1.0",
+    "uuid": "^3.3.2"
   }
 }
