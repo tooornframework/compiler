@@ -14,5 +14,5 @@ export class FunctionSchema extends Schema {
 	readonly name: string;
 	readonly parameters: Array<QualifiedReference<ParameterSchema>>;
 	readonly returns: QualifiedReference<TypeSchema>;
-	readonly typeArguments: Array<QualifiedReference<TypeSchema>>;
+	readonly typeParameters: Array<QualifiedReference<TypeSchema>>;
 }

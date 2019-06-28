@@ -6,7 +6,7 @@ import {MethodSchema} from "./MethodSchema";
 import {TypeParameterSchema} from "./TypeParameterSchema";
 
 export class InterfaceSchema extends Schema {
-	readonly typeArguments: ReadonlyArray<QualifiedReference<TypeParameterSchema>>
+	readonly typeParameters: ReadonlyArray<QualifiedReference<TypeParameterSchema>>
 	readonly extends: ReadonlyArray<QualifiedReference<DeclaredTypeSchema>>;
 	readonly properties: ReadonlyArray<QualifiedReference<PropertySchema>>;
 	readonly methods: ReadonlyArray<QualifiedReference<MethodSchema>>;

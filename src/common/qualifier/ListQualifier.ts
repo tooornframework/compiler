@@ -1,6 +1,6 @@
 import {Qualifier} from "./Qualifier";
 
-export class SetQualifier implements Qualifier {
+export class ListQualifier implements Qualifier {
 
 	private readonly qualifiers: Array<Qualifier>;
 
@@ -10,7 +10,7 @@ export class SetQualifier implements Qualifier {
 	}
 
 	public equals(other: any): boolean {
-		if (!(other instanceof SetQualifier)) {
+		if (!(other instanceof ListQualifier)) {
 			return false;
 		}
 

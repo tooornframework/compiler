@@ -1,7 +1,7 @@
 import {SchemeReducer} from "../SchemeReducer";
 import {InterfaceSchema} from "../../schema/declarations/InterfaceSchema";
 import {Builder} from "../../common/utils/Builder";
-import {SetQualifier} from "../../common/qualifier/SetQualifier";
+import {ListQualifier} from "../../common/qualifier/ListQualifier";
 import {QualifiedReference} from "../../common/reference/QualifiedReference";
 import {InterfacesSetSchema} from "../../schema/declarations/InterfacesSetSchema";
 import {Qualifier} from "../../common/qualifier/Qualifier";
@@ -20,7 +20,7 @@ export class InterfaceReducer extends SchemeReducer<InterfaceSchema, InterfacesS
 	}
 
 	public qualifier(values: Array<QualifiedReference<InterfaceSchema>>): Qualifier {
-		return new SetQualifier(values.map(it => it.getQualifier()));
+		return new ListQualifier(values.map(it => it.getQualifier()));
 	}
 
 	public schema(): Class<InterfacesSetSchema> {

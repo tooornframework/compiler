@@ -1,4 +1,3 @@
-import {Qualifier} from "../../common/qualifier/Qualifier";
 import {TypeSchema} from "./TypeSchema";
 import {QualifiedReference} from "../../common/reference/QualifiedReference";
 import {Schema} from "../Schema";

@@ -2,6 +2,7 @@ import {Schema} from "../Schema";
 import {QualifiedReference} from "../../common/reference/QualifiedReference";
 import {ParameterSchema} from "./ParameterSchema";
 import {TypeSchema} from "../type/TypeSchema";
+import {TypeParameterSchema} from "./TypeParameterSchema";
 
 export class MethodSchema extends Schema {
 	readonly isAbstract: boolean;
@@ -13,5 +14,5 @@ export class MethodSchema extends Schema {
 	readonly name: string;
 	readonly parameters: Array<QualifiedReference<ParameterSchema>>;
 	readonly returns: QualifiedReference<TypeSchema>;
-	readonly typeArguments: Array<QualifiedReference<TypeSchema>>;
+	readonly typeParameters: Array<QualifiedReference<TypeParameterSchema>>;
 }

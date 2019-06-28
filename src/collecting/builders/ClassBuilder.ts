@@ -29,7 +29,7 @@ export class ClassBuilder extends GenericNodeBuilder<ClassDeclaration, ClassSche
 			isAmbient: n.isAmbient(),
 			extends: manager.process().as(DeclaredTypeSchema).ifPresent(n.getExtends()),
 			properties: manager.process().as(PropertySchema).all(n.getProperties()),
-			typeArguments: manager.process().as(TypeParameterSchema).all(n.getTypeParameters()),
+			typeParameters: manager.process().as(TypeParameterSchema).all(n.getTypeParameters()),
 			methods: manager.process().as(MethodSchema).all(n.getMethods()),
 			implements: manager.process().as(InterfacesSetSchema).as(ClassSchema).all(n.getImplements()),
 		})

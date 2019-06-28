@@ -27,7 +27,6 @@ export class Loader {
 				.builder(new PlainTypeBuilder())
 				.builder(new DeclaredTypeBuilder())
 				.interceptor(new VariableToDeclarationsInterceptor())
-				.interceptor(new VariableToDeclarationsInterceptor())
 				.reducer(new InterfaceReducer())
 				.repository(repository)
 		);

@@ -27,7 +27,7 @@ export class InterfaceBuilder extends GenericNodeBuilder<InterfaceDeclaration, I
 			isAmbient: n.isAmbient(),
 			extends: manager.process().as(DeclaredTypeSchema).all(n.getExtends()),
 			properties: manager.process().as(PropertySchema).all(n.getProperties()),
-			typeArguments: manager.process().as(TypeParameterSchema).all(n.getTypeParameters()),
+			typeParameters: manager.process().as(TypeParameterSchema).all(n.getTypeParameters()),
 			methods: manager.process().as(MethodSchema).all(n.getMethods())
 		})
 	}

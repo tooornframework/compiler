@@ -14,7 +14,7 @@ export class DeclaredTypeBuilder extends SchemaBuilder<Type, DeclaredTypeSchema>
 		return Builder.of(DeclaredTypeSchema).setAndBuild({
 			qualifier: q,
 			reference: manager.process().as(Schema).value(n.getSymbol().getDeclarations()),
-			typeArguments: manager.process().as(TypeSchema).allFiltered(n.getTypeArguments(), it => {
+			typeParameters: manager.process().as(TypeSchema).allFiltered(n.getTypeParameters(), it => {
 				console.log(it.getText());
 				return it.getText() !== "this";
 			})

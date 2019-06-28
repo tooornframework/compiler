@@ -16,5 +16,5 @@ export class ClassSchema extends Schema {
 	readonly isDefaultExport: boolean;
 	readonly isNamedExport: boolean;
 	readonly name: string;
-	readonly typeArguments: Array<QualifiedReference<TypeParameterSchema>>;
+	readonly typeParameters: Array<QualifiedReference<TypeParameterSchema>>;
 }
