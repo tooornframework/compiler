@@ -18,8 +18,9 @@ export class DeclaredTypeBuilder extends SchemaBuilder<Type, DeclaredTypeSchema>
 		});
 	}
 
+	// TODO fix it
 	public match(n: unknown, manager: BuildManager): n is Type {
-		return n instanceof Type && !!n.getSymbol() && !!n.getSymbol().getDeclarations().length;
+		return n instanceof Type && !!n.getSymbol() && !!n.getSymbol().getDeclarations().length && !(n.isTuple() || n.isUnionOrIntersection());
 	}
 
 	public qualifier(n: Type): Qualifier {

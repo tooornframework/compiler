@@ -3,7 +3,7 @@ import {notNullOrThrow} from "../utils/LangUtils";
 import {Class} from "../utils/Class";
 import {QualifiedReference} from "./QualifiedReference";
 
-export class SimpleQualifiedReference<S> extends QualifiedReference<S> {
+export class RegularQualifiedReference<S> extends QualifiedReference<S> {
 	private allowedClasses: Array<Class<S>>;
 
 	public constructor(private readonly qualifier: Qualifier, private lookup: (qualifier: Qualifier) => unknown, classes?: Array<Class<S>>) {

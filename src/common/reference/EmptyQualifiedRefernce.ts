@@ -4,10 +4,12 @@ import {Qualifier} from "../qualifier/Qualifier";
 
 export class EmptyQualifiedRefernce<S> extends QualifiedReference<S> {
 	public getQualifier(): Qualifier {
+		debugger;
 		throw new Error("Empty reference");
 	}
 
 	public getValue(): S {
+		debugger;
 		throw new Error("Empty reference");
 	}
 

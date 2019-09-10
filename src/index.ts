@@ -1,3 +1,3 @@
-import {Loader} from "./webpack/Loader";
+import {Plugin} from "./compiler/Plugin";
 
-export default new Loader().asFunction();
+export default new Plugin().spawn();

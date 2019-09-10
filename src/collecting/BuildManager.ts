@@ -1,10 +1,11 @@
-import {QualifiedReference} from "../common/reference/QualifiedReference";
 import {v4} from "uuid";
 import {ReferenceFactory} from "../common/reference/ReferenceFactory";
 import {Class} from "../common/utils/Class";
 import {BuildProcessingSyntax} from "./BuildProcessingSyntax";
 import {BuildManagerConfigurator} from "./conf/BuildManagerConfigurator";
 import {InternalBuildManagerConfigurator} from "./conf/InternalBuildManagerConfigurator";
+import {QualifiedReference} from "../common/reference/QualifiedReference";
+import {Schema} from "../schema/Schema";
 
 export class BuildManager {
 
@@ -22,7 +23,7 @@ export class BuildManager {
 	}
 
 	public process(): BuildProcessingSyntax<never> {
-		return BuildProcessingSyntax.of((classes: Array<Class<any>>, original: any) => {
+		return BuildProcessingSyntax.for((classes: Array<Class<any>>, original: any) => {
 			this.log("Processing as instances of (" + classes.map(it => it.name).join(", ") + ") ");
 			this.log("Values before interceptors, list=" + Array.isArray(original) + " ( " + [].concat(original).map(it => it ? it.constructor.name : it).join(", ") + ")");
 
@@ -30,9 +31,9 @@ export class BuildManager {
 				.reduce((values, interceptor) => values
 					.flatMap(value => interceptor.match(value) ? interceptor.intercept(value) : value), [].concat(original));
 
-			this.log("Values after interceptors, ( " + values.map(it => it ? it.constructor.name : it).join(", ") + ")");
+			this.log("Values after interceptors, (" + values.map(it => it ? it.constructor.name : it).join(", ") + ")");
 
-			const references = values.map(value => {
+			const references: Array<QualifiedReference<Schema>> = values.map(value => {
 				const builder = this.findOnlyFrom(this.configurator.getBuilders(), it => it.match(value, this));
 
 				this.log("Processing value (" + (value ? value.constructor.name : value) + ")");
@@ -73,6 +74,7 @@ export class BuildManager {
 					return references[0];
 				}
 
+				debugger;
 				throw new Error("Unable find the reducer");
 			}
 			this.log("Found reducer " + reducer.constructor.name);
@@ -90,7 +92,7 @@ export class BuildManager {
 
 			this.knowQualifiers.add(reducedQualifier.sym());
 			this.log("Executing reducer" + id);
-			const schema = reducer.reduce(reducedQualifier, values);
+			const schema = reducer.reduce(reducedQualifier, references);
 			this.configurator.getRepository().set(schema);
 			this.log("Reducer execution finished" + id + ", of type (" + schema.constructor.name + ")");
 			return this.referenceFactory.qualified(reducedQualifier, classes.concat(reducer.schema()));
@@ -98,7 +100,6 @@ export class BuildManager {
 	}
 
 	private log(...messages: Array<any>) {
-		return;
 		console.log(...messages);
 	}
 
@@ -107,11 +108,17 @@ export class BuildManager {
 			.filter(it => matcher(it));
 
 		if (values.length > 1) {
+			debugger
 			throw new Error("More than one was found");
 		}
 
 		return values[0];
 	}
 
+}
+
+class Z  {}
+
+interface Z {
 
 }

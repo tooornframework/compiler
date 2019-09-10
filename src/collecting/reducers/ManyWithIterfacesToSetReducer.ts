@@ -6,10 +6,17 @@ import {QualifiedReference} from "../../common/reference/QualifiedReference";
 import {InterfacesSetSchema} from "../../schema/declarations/InterfacesSetSchema";
 import {Qualifier} from "../../common/qualifier/Qualifier";
 import {Class} from "../../common/utils/Class";
+import {ClassSchema} from "../../schema/declarations/ClassSchema";
 
-export class InterfaceReducer extends SchemeReducer<InterfaceSchema, InterfacesSetSchema> {
+export class ManyWithIterfacesToSetReducer extends SchemeReducer<InterfaceSchema, InterfacesSetSchema> {
 	public match(values: Array<QualifiedReference<InterfaceSchema>>): values is Array<QualifiedReference<InterfaceSchema>> {
-		return values.every(it => it.isClassAllowed(InterfaceSchema));
+		const isAnyInterface =  values.some(it => it.isClassAllowed(InterfaceSchema));
+
+		if (!isAnyInterface) {
+			return false;
+		}
+
+		return values.length > 1;
 	}
 
 	public reduce(q: Qualifier, values: Array<QualifiedReference<InterfaceSchema>>): InterfacesSetSchema {
@@ -20,7 +27,7 @@ export class InterfaceReducer extends SchemeReducer<InterfaceSchema, InterfacesS
 	}
 
 	public qualifier(values: Array<QualifiedReference<InterfaceSchema>>): Qualifier {
-		return new ListQualifier(values.map(it => it.getQualifier()));
+		return new ListQualifier(values.filter(it => !it.isEmpty()).map(it => it.getQualifier()));
 	}
 
 	public schema(): Class<InterfacesSetSchema> {

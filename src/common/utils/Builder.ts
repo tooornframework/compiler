@@ -7,10 +7,19 @@ export class Builder<S> {
 		return new Builder(Clazz);
 	}
 
-	private values: MappedType<S>;
+	public static ofInterface<S>(): Builder<S> {
+		return new Builder();
+	}
 
-	public constructor(private readonly Clazz: NoArgsConstructorClass<S>) {
+	private values: MappedType<S> = {} as MappedType<S>;
 
+	public constructor(private readonly Clazz?: NoArgsConstructorClass<S>) {
+
+	}
+
+	public setAny(key: string, values: any): this {
+		this.values[key] = values;
+		return this;
 	}
 
 	public set(values: MappedType<S>): this {
@@ -23,12 +32,12 @@ export class Builder<S> {
 	}
 
 	public build(): S {
-		const c = new this.Clazz();
+		const c = this.Clazz ? new this.Clazz() : {};
 
 		Object.keys(this.values).forEach(it => {
 			c[it] = this.values[it];
 		});
 
-		return c;
+		return c as S;
 	}
 }

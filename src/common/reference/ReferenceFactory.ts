@@ -1,7 +1,7 @@
 import {Qualifier} from "../qualifier/Qualifier";
 import {QualifiedReference} from "./QualifiedReference";
 import {Class} from "../utils/Class";
-import {SimpleQualifiedReference} from "./SimpleQualifiedReference";
+import {RegularQualifiedReference} from "./RegularQualifiedReference";
 import {EmptyQualifiedRefernce} from "./EmptyQualifiedRefernce";
 
 export class ReferenceFactory {
@@ -12,7 +12,7 @@ export class ReferenceFactory {
 
 
 	public qualified<C>(qualifier: Qualifier, Class: Array<Class<C>>): QualifiedReference<C> {
-		return new SimpleQualifiedReference(qualifier, this.lookUp, Class);
+		return new RegularQualifiedReference(qualifier, this.lookUp, Class);
 	}
 
 	public empty<C>(): QualifiedReference<C> {

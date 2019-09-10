@@ -11,12 +11,13 @@ class HierarcyCell {
 	}
 }
 
-export class LongNodeQualifier implements Qualifier {
+export class LongNodeQualifier extends Qualifier {
 
 
 	private hierarchyChain: Array<HierarcyCell> = [];
 
 	public constructor(node: Node) {
+		super();
 		this.hierarchyChain = this.getHierarchyChain(node);
 	}
 
@@ -29,9 +30,7 @@ export class LongNodeQualifier implements Qualifier {
 	}
 
 	public sym(): string {
-		return "LongNodeQualifier(" + this.hierarchyChain
-			.map(it => it.toString())
-			.join("") + ")";
+		return "LongNodeQualifier(" + this.hierarchyChain.map(it => it.toString()).join("") + ")";
 	}
 
 	private getHierarchyChain(node: Node): Array<HierarcyCell> {

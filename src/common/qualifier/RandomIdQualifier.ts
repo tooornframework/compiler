@@ -1,6 +1,6 @@
 import {Qualifier} from "./Qualifier";
 import { v4 } from "uuid";
-export class RandomIdQualifier implements Qualifier {
+export class RandomIdQualifier extends Qualifier {
 	private id = v4();
 
 	public equals(other: any): boolean {

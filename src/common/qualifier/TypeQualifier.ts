@@ -1,10 +1,10 @@
 import {Qualifier} from "./Qualifier";
 import {Type} from "ts-morph";
 
-export class TypeQualifier implements Qualifier {
+export class TypeQualifier extends Qualifier {
 
 	public constructor(private readonly type: Type) {
-
+		super();
 	}
 
 	public equals(other: any): boolean {

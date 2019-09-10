@@ -1,4 +1,4 @@
-import {Project, Node, SourceFile} from "ts-morph";
+import {Project, Node, SourceFile, TypeGuards} from "ts-morph";
 import {BuildManager} from "../BuildManager";
 import {QualifiedReference} from "../../common/reference/QualifiedReference";
 import {Schema} from "../../schema/Schema";
@@ -9,13 +9,21 @@ export class Runner {
 
 	}
 
-	public start(filePath: string): Array<QualifiedReference<Schema>> {
+	public start(filePath: string, onAdd: (schema: Schema, node: Node) => void): Array<QualifiedReference<Schema>> {
 		const sf = this.project.getSourceFile(filePath)!;
 
 		sf.refreshFromFileSystemSync();
 
-		return this.getCandidates(sf)
-			.map(it => this.processor.process().as(Schema).value(it));
+		return this.getCandidates(sf).map(it => {
+			const ref = this.processor.process().as(Schema).value(it);
+
+			if (TypeGuards.isClassDeclaration(it) || TypeGuards.isEnumDeclaration(it)) {
+				if (!ref.isEmpty()) {
+					onAdd(ref.getValue(), it);
+				}
+			}
+			return ref;
+		});
 	}
 	public getCandidates(sf: SourceFile): Array<Node> {
 		return [].concat(sf.getInterfaces())

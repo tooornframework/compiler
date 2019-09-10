@@ -2,7 +2,7 @@ import {NoArgsConstructorClass} from "../common/utils/Class";
 import {QualifiedReference} from "../common/reference/QualifiedReference";
 
 export class BuildProcessingSyntax<S> {
-	public static of(executor: (Class: Array<NoArgsConstructorClass<any>>, value: any) => QualifiedReference<any>): BuildProcessingSyntax<never> {
+	public static for(executor: (Class: Array<NoArgsConstructorClass<any>>, value: any) => QualifiedReference<any>): BuildProcessingSyntax<never> {
 		return new BuildProcessingSyntax(executor) as BuildProcessingSyntax<never>;
 	}
 
