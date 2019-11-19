@@ -1,10 +1,10 @@
-import {Package} from "../packaging/Package";
-import {SourceFile, Node, TypeGuards} from "ts-morph";
 import {ReflectionBridge} from "./bridge/ReflectionBridge";
-import {Qualifier} from "../common/qualifier/Qualifier";
+import { readFileSync } from "fs";
 import {Inject} from "../dependencies/annotations/Inject";
 import {Service} from "../dependencies/annotations/Service";
 import {Json} from "../common/utils/Json";
+import * as Path from "path";
+import * as AppRoot from "app-root-path";
 
 @Service
 export class CodeGenerator {
@@ -23,7 +23,16 @@ export class CodeGenerator {
 		return this.bridge.getReflectionStringsRepositoryDefinitionImportCode(stringifierPackages);
 
 	}
-	public writeReference(node: Node, qualifier: Qualifier) {
-		throw new Error("Unimpl");
+
+	public getRefDecorator() {
+		return this.bridge.getReflectionReferenceImportCode();
+	}
+
+	public getRVC() {
+		return readFileSync(Path.join(AppRoot.path, "resources/RVC.js")).toString();
+	}
+
+	public separateToSeveralLines(...args: Array<string>) {
+		return "\n" + args.join("\n") + "\n";
 	}
 }

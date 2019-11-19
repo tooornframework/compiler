@@ -1,7 +1,7 @@
-import {AbstractPackager} from "../packaging/AbstractPackager";
-import {Package} from "../packaging/Package";
+import {AbstractPackager} from "../../packaging/AbstractPackager";
+import {Package} from "../../packaging/Package";
 
-class ReflectionApi {
+export class ReflectionApi {
 	private definitions: Array<any> = [];
 
 	private map: Map<any, any> = new Map<any, any>();
@@ -27,6 +27,3 @@ class ReflectionApi {
 		throw new Error("aaaa")
 	}
 }
-
-//@ts-ignore
-//window.Reflection = new ReflectionApi();

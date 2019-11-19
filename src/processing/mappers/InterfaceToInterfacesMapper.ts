@@ -4,7 +4,7 @@ import {Mapper} from "../context/annotations/Mapper";
 
 @Mapper
 export class InterfaceToInterfacesMapper extends SchemeMapper<InterfaceDeclaration, Node>{
-	public intercept(x: InterfaceDeclaration): Array<Node> {
+	public map(x: InterfaceDeclaration): Array<Node> {
 		return x.getType().getSymbol().getDeclarations();
 	}
 

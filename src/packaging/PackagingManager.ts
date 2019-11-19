@@ -44,6 +44,10 @@ export class PackagingManager {
 		return pkgers[0].pack(value);
 	}
 
+	public packAll(values: Array<unknown>): Array<Package<number, unknown>> {
+		return values.map(it => this.pack(it));
+	}
+
 	public unpack(pkg: Package<number, unknown>): unknown {
 		const pkgers = this.packagersProvider.getAll()
 			.filter(it => it.matchPackage(pkg));

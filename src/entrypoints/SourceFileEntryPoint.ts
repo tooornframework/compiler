@@ -2,14 +2,13 @@ import {Project, Node, SourceFile, TypeGuards} from "ts-morph";
 import {BuildManager} from "../processing/BuildManager";
 import {QualifiedReference} from "../common/reference/QualifiedReference";
 import {Schema} from "../schema/Schema";
-import {Inject} from "../dependencies/annotations/Inject";
-import {SchemaRepository} from "../repository/SchemaRepository";
+import {AbstractSchemaRepository} from "../repository/schema/AbstractSchemaRepository";
 
 export class SourceFileEntryPoint {
 
     private buildManager = new BuildManager();
 
-	constructor(private project: Project, private repository: SchemaRepository) {
+	constructor(private project: Project, private repository: AbstractSchemaRepository) {
 		this.buildManager.useRepository(repository);
 	}
 

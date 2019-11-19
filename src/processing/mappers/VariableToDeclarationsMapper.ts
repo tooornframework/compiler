@@ -4,7 +4,7 @@ import {Mapper} from "../context/annotations/Mapper";
 
 @Mapper
 export class VariableToDeclarationsMapper extends SchemeMapper<VariableDeclaration, Node>{
-	public intercept(x: VariableDeclaration): Array<Node> {
+	public map(x: VariableDeclaration): Array<Node> {
 		return x.getType().getSymbol().getDeclarations();
 	}
 

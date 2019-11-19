@@ -1,7 +1,10 @@
 import {Qualifier} from "./Qualifier";
 import {Node, TypeGuards} from "ts-morph";
+import { Node as TsNode, isSourceFile, Symbol, SyntaxKind } from "typescript";
 
-class HierarcyCell {
+class HierarchyCell {
+	public static readonly SOURCE_FILE = "source";
+
 	constructor(public readonly name: string, public readonly type: string, public readonly start: number, public readonly end: number) {
 
 	}
@@ -9,16 +12,19 @@ class HierarcyCell {
 	public toString(): string {
 		return "[" + this.name + ":" + this.type + ":" + this.start + ":" + this.end + "]";
 	}
+
+	public isSourceFile() {
+		return this.type === HierarchyCell.SOURCE_FILE;
+	}
 }
 
 export class LongNodeQualifier extends Qualifier {
 
+	private hierarchyChain: Array<HierarchyCell> = [];
 
-	private hierarchyChain: Array<HierarcyCell> = [];
-
-	public constructor(node: Node) {
+	public constructor(node: Node | TsNode) {
 		super();
-		this.hierarchyChain = this.getHierarchyChain(node);
+		this.hierarchyChain = this.createHierarchyChain(node instanceof Node ? node.compilerNode : node);
 	}
 
 	public equals(other: any): boolean {
@@ -33,26 +39,32 @@ export class LongNodeQualifier extends Qualifier {
 		return "LongNodeQualifier(" + this.hierarchyChain.map(it => it.toString()).join("") + ")";
 	}
 
-	private getHierarchyChain(node: Node): Array<HierarcyCell> {
-		const parent = node.getParent();
+	public getHierarchyChain() {
+		return this.hierarchyChain;
+	}
+
+	private createHierarchyChain(node: TsNode): Array<HierarchyCell> {
+		const parent = node.parent;
 
 		const cell = this.selectCellOrNull(node);
 
 		if (!cell) {
-			return parent ? this.getHierarchyChain(parent) : Array.of();
+			return parent ? this.createHierarchyChain(parent) : Array.of();
 		}
 
-		return parent ? this.getHierarchyChain(parent).concat(cell) : Array.of(cell);
+		return parent ? this.createHierarchyChain(parent).concat(cell) : Array.of(cell);
 	}
 
-	private selectCellOrNull(node: Node): HierarcyCell | null {
+	private selectCellOrNull(node: TsNode): HierarchyCell | null {
 
-			if (TypeGuards.isSourceFile(node)) {
-				return new HierarcyCell(node.getFilePath(), "source", node.getStart(true), node.getEnd());
+			if (isSourceFile(node)) {
+				return new HierarchyCell(node.fileName, HierarchyCell.SOURCE_FILE, node.getStart(), node.getEnd());
 			}
 
-			if (node.getSymbol()) {
-				return new HierarcyCell(node.getSymbol().getName(), node.getKindName(), node.getStart(true), node.getEnd());
+			const symbol: Symbol | null = (node as any).symbol;
+
+			if (symbol) {
+				return new HierarchyCell(symbol.name, SyntaxKind[node.kind], node.getStart(), node.getEnd());
 			}
 
 			return null;

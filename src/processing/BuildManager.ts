@@ -6,7 +6,7 @@ import {Schema} from "../schema/Schema";
 
 import {Inject} from "../dependencies/annotations/Inject";
 import {CollectingComponentsProvider} from "./context/CollectingComponentsProvider";
-import {SchemaRepository} from "../repository/SchemaRepository";
+import {AbstractSchemaRepository} from "../repository/schema/AbstractSchemaRepository";
 import { Once } from "lodash-decorators";
 
 export class BuildManager {
@@ -14,11 +14,11 @@ export class BuildManager {
 	@Inject
 	private collectingComponentsProvider: CollectingComponentsProvider;
 
-	private repository: SchemaRepository;
+	private repository: AbstractSchemaRepository;
 
 	private knowQualifiers: Set<string> = new Set();
 
-	public useRepository(repository: SchemaRepository) {
+	public useRepository(repository: AbstractSchemaRepository) {
 		this.repository = repository;
 	}
 
@@ -26,9 +26,10 @@ export class BuildManager {
 		return BuildProcessingSyntax.for((classes: Array<Class<any>>, original: any) => {
 			const values = this.collectingComponentsProvider.getMappers()
 				.reduce((values, mapper) => values
-					.flatMap(value => mapper.match(value) ? mapper.intercept(value) : value), [].concat(original));
+					.map(value => mapper.match(value) ? mapper.map(value) : value).reduce<Array<unknown>>((acc, it) => acc.concat(it), []), [].concat(original));
 			const references: Array<QualifiedReference<Schema>> = values.map(value => {
-				const builder = this.findOnlyFrom(this.collectingComponentsProvider.getBuilders(), it => it.match(value, this));
+				const builder = this.findOnlyFrom(this.collectingComponentsProvider
+					.getBuilders(), it => it.match(value, this));
 
 				if (!builder) {
 					return this.referenceFactory().empty();

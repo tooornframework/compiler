@@ -1,10 +1,13 @@
 {
   "name": "compiler",
   "version": "1.0.0",
-  "main": "./build/index.js",
+  "main": "./build/builder/index.js",
   "dependencies": {
     "@types/uuid": "^3.4.4",
     "@types/webpack": "^4.39.8",
+    "add-asset-webpack-plugin": "^1.0.0",
+    "app-root-path": "^3.0.0",
+    "awesome-typescript-loader": "^5.2.1",
     "inversify": "^5.0.1",
     "inversify-inject-decorators": "latest",
     "lodash": "^4.17.15",

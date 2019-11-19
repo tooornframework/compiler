@@ -3,7 +3,7 @@
     "module": "commonjs",
     "target": "esnext",
     "sourceMap": true,
-    "outDir": "./build",
+    "outDir": "./build/builder",
     "skipLibCheck": true,
     "allowJs":true,
     "experimentalDecorators": true,
@@ -11,6 +11,7 @@
   },
   "exclude": [
     "node_modules",
-    "build"
+    "build",
+    "resources"
   ]
 }

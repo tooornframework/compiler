@@ -3,15 +3,15 @@ import {Service} from "../../dependencies/annotations/Service";
 @Service
 export class ReflectionBridge {
 	public getReflectionDefinitionImportCode(packages: string): string {
-		return "window.Reflection.definition(" + packages + ");";
+		return "window.RVC.d(" + packages + ");";
 	}
 
 	public getReflectionStringsRepositoryDefinitionImportCode(stringsRepository: string): string {
-		return "window.Reflection.defineNameRegistry(" + stringsRepository + ");";
+		return "window.RVC.ds(" + stringsRepository + ");";
 	}
 
 
-	public getReflectionReferenceImportCode(reference: string, qualifier: string): string {
-		return "window.Reflection.reference((" + reference + " as any), \"" + qualifier + "\")";
+	public getReflectionReferenceImportCode(): string {
+		return "window.RVC.ref"
 	}
 }
