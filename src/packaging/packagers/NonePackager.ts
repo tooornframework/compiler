@@ -1,7 +1,9 @@
-import {Packager} from "../Packager";
+import {AbstractPackager} from "../AbstractPackager";
 import {NonePackage} from "../package/NonePackage";
+import {Packager} from "../context/annotations/Packager";
 
-export class NonePackager extends Packager<undefined | null, NonePackage> {
+@Packager
+export class NonePackager extends AbstractPackager<undefined | null, NonePackage> {
 	public unpack(pkg: NonePackage): null | undefined {
 		return pkg.v;
 	}

@@ -1,7 +1,9 @@
-import {Packager} from "../Packager";
+import {AbstractPackager} from "../AbstractPackager";
 import {StringPackage} from "../package/StringPackage";
+import {Packager} from "../context/annotations/Packager";
 
-export class StringPackager extends Packager<string, StringPackage> {
+@Packager
+export class StringPackager extends AbstractPackager<string, StringPackage> {
 	public unpack(pkg: StringPackage): string {
 		return pkg.v;
 	}

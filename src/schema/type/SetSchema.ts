@@ -1,6 +1,7 @@
 import {TypeSchema} from "./TypeSchema";
 import {QualifiedReference} from "../../common/reference/QualifiedReference";
 import {Schema} from "../Schema";
+import {NamedSchema} from "../context/annotations/NamedSchema";
 
 export enum SetSchemaKind {
 	UNION = "UNION",
@@ -8,6 +9,7 @@ export enum SetSchemaKind {
 	TUPLE = "TUPLE"
 }
 
+@NamedSchema
 export class SetSchema extends TypeSchema {
 	public static readonly KIND = SetSchemaKind;
 

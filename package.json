@@ -4,7 +4,16 @@
   "main": "./build/index.js",
   "dependencies": {
     "@types/uuid": "^3.4.4",
+    "@types/webpack": "^4.39.8",
+    "inversify": "^5.0.1",
+    "inversify-inject-decorators": "latest",
+    "lodash": "^4.17.15",
+    "lodash-decorators": "^6.0.1",
+    "reflect-metadata": "^0.1.13",
+    "require-context": "^1.1.0",
     "ts-morph": "^2.1.0",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "webpack": "^4.41.2",
+    "webpack-inject-plugin": "^1.5.3"
   }
 }

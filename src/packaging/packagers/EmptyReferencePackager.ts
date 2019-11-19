@@ -1,12 +1,11 @@
-import {Packager} from "../Packager";
+import {AbstractPackager} from "../AbstractPackager";
 import {QualifiedReference} from "../../common/reference/QualifiedReference";
-import {ReferencePackage} from "../package/ReferencePackage";
-import {RegularQualifiedReference} from "../../common/reference/RegularQualifiedReference";
-import {RecycledQualifier} from "../../common/qualifier/RecycledQualifier";
 import {EmptyQualifiedRefernce} from "../../common/reference/EmptyQualifiedRefernce";
 import {EmptyReferencePackage} from "../package/EmptyReferencePackage";
+import {Packager} from "../context/annotations/Packager";
 
-export class EmptyReferencePackager extends Packager<QualifiedReference<unknown>, EmptyReferencePackage> {
+@Packager
+export class EmptyReferencePackager extends AbstractPackager<QualifiedReference<unknown>, EmptyReferencePackage> {
 	public unpack(): QualifiedReference<unknown> {
 		return new EmptyQualifiedRefernce();
 	}

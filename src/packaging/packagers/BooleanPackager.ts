@@ -1,7 +1,9 @@
-import {Packager} from "../Packager";
+import {AbstractPackager} from "../AbstractPackager";
 import {BooleanPackage} from "../package/BooleanPackage";
+import {Packager} from "../context/annotations/Packager";
 
-export class BooleanPackager extends Packager<boolean, BooleanPackage>{
+@Packager
+export class BooleanPackager extends AbstractPackager<boolean, BooleanPackage>{
 	public unpack(pkg: BooleanPackage): boolean {
 		return Boolean(pkg.v);
 	}

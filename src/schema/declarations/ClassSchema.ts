@@ -5,7 +5,9 @@ import {PropertySchema} from "./PropertySchema";
 import {MethodSchema} from "./MethodSchema";
 import {TypeParameterSchema} from "./TypeParameterSchema";
 import {InterfacesSetSchema} from "./InterfacesSetSchema";
+import {NamedSchema} from "../context/annotations/NamedSchema";
 
+@NamedSchema
 export class ClassSchema extends Schema {
 	readonly extends: QualifiedReference<DeclaredTypeSchema> | null;
 	readonly implements: ReadonlyArray<QualifiedReference<InterfacesSetSchema | ClassSchema>>;

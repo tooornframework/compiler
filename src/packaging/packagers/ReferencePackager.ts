@@ -1,18 +1,17 @@
-import {Packager} from "../Packager";
+import {AbstractPackager} from "../AbstractPackager";
 import {QualifiedReference} from "../../common/reference/QualifiedReference";
 import {ReferencePackage} from "../package/ReferencePackage";
 import {RegularQualifiedReference} from "../../common/reference/RegularQualifiedReference";
 import {RecycledQualifier} from "../../common/qualifier/RecycledQualifier";
-import {StringsRegistry} from "../StringsRegistry";
 
-export class ReferencePackager extends Packager<QualifiedReference<unknown>, ReferencePackage> {
+import {Packager} from "../context/annotations/Packager";
 
-	public constructor(private stringRegistry: StringsRegistry) {
-		super();
-	}
+@Packager
+export class ReferencePackager extends AbstractPackager<QualifiedReference<unknown>, ReferencePackage> {
+
 
 	public unpack(pkg: ReferencePackage): QualifiedReference<unknown> {
-		const qualifier = new RecycledQualifier(this.stringRegistry.find(pkg.v));
+		const qualifier = new RecycledQualifier(this.getManager().getStringsRepository().find(pkg.v));
 
 		return new RegularQualifiedReference(qualifier, () => {
 			throw new Error("References search is not implemented now");
@@ -20,7 +19,7 @@ export class ReferencePackager extends Packager<QualifiedReference<unknown>, Ref
 	}
 
 	public toPackedValue(value: QualifiedReference<unknown>): number {
-		return this.stringRegistry.define(value.getQualifier().sym());
+		return this.getManager().getStringsRepository().define(value.getQualifier().sym());
 	}
 
 	public matchUnpacked(value: unknown): value is QualifiedReference<unknown> {

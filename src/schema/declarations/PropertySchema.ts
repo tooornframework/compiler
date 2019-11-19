@@ -1,9 +1,9 @@
 import {Schema} from "../Schema";
 import {QualifiedReference} from "../../common/reference/QualifiedReference";
-import {DeclaredTypeSchema} from "../type/DeclaredTypeSchema";
 import {TypeSchema} from "../type/TypeSchema";
+import {NamedSchema} from "../context/annotations/NamedSchema";
 
-
+@NamedSchema
 export class PropertySchema extends Schema {
 	readonly isReadonly: boolean;
 	readonly isNullable: boolean;

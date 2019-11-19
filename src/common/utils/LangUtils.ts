@@ -1,5 +1,6 @@
 import {Json} from "./Json";
 import {Hash, MappedType} from "./MappedType";
+import {Class} from "./Class";
 
 export function ifNotNull<T>(x: T, cb: (x: NonNullable<T>) => void) {
 	if (x !== null && x !== undefined) {
@@ -37,4 +38,19 @@ export function mapToObj<J>(x: Map<string, J>): Hash<J> {
 
 export function toJson(x: object): Json {
 	return JSON.parse(JSON.stringify(x));
+}
+
+export function assertAll<T>(values: Array<unknown>, predicate: (v: unknown) => v is T): Array<T> {
+	return values.map(it => {
+		if (predicate(it)) {
+			return it;
+		}
+		throw new Error("Assertion failure");
+	})
+}
+
+export function curriedIsInstanceOf<T>(Clazz: Class<T>) {
+	return (value: unknown): value is T => {
+		return value instanceof Clazz;
+	}
 }

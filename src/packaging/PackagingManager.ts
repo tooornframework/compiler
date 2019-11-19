@@ -1,18 +1,17 @@
 import {Package} from "./Package";
-import {PackagingManagerConfigurator} from "./conf/PackagingManagerConfigurator";
+import {Inject} from "../dependencies/annotations/Inject";
+import {PackagersProvider} from "./context/PackagersProvider";
+import {StringsRepository} from "../repository/StringsRepository";
 
 export class PackagingManager {
 
-	public static configure(configurationAction: (x: PackagingManagerConfigurator) => void): PackagingManager {
-		const configurator = new PackagingManagerConfigurator();
-		configurationAction(configurator);
-		return new PackagingManager(configurator);
-	}
+	@Inject
+	private packagersProvider: PackagersProvider;
 
-	private constructor(private conf: PackagingManagerConfigurator) {
+	public constructor(private stringsRepository: StringsRepository) {
 		const ids = [];
 
-		this.conf.getPackagers().forEach(it => {
+		this.packagersProvider.getAll().forEach(it => {
 			if (ids.includes(it.packageId())) {
 				throw new Error("Duplicated id");
 			}
@@ -22,12 +21,23 @@ export class PackagingManager {
 		});
 	}
 
+	public getStringsRepository() {
+		return this.stringsRepository;
+	}
+
+	public useStringsRepository(stringsRepository: StringsRepository) {
+		this.stringsRepository = stringsRepository;
+	}
+
 	public pack(value: unknown): Package<number, unknown> {
-		const pkgers = this.conf.getPackagers().filter(it => it.matchUnpacked(value));
+		const pkgers = this.packagersProvider.getAll()
+			.filter(it => it.matchUnpacked(value));
+
 		if (!pkgers.length) {
 			throw new Error("Unable to find packager");
 		}
-		if (pkgers.length === 0) {
+
+		if (pkgers.length > 1) {
 			throw new Error("Found more than one packager for schema");
 		}
 
@@ -35,11 +45,13 @@ export class PackagingManager {
 	}
 
 	public unpack(pkg: Package<number, unknown>): unknown {
-		const pkgers = this.conf.getPackagers().filter(it => it.matchPackage(pkg));
+		const pkgers = this.packagersProvider.getAll()
+			.filter(it => it.matchPackage(pkg));
+
 		if (!pkgers.length) {
 			throw new Error("Unable to find packager");
 		}
-		if (pkgers.length === 0) {
+		if (pkgers.length > 1) {
 			throw new Error("Found more than one packager for schema");
 		}
 

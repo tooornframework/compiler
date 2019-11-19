@@ -5,9 +5,12 @@
     "sourceMap": true,
     "outDir": "./build",
     "skipLibCheck": true,
-    "experimentalDecorators": true
+    "allowJs":true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "build"
   ]
 }

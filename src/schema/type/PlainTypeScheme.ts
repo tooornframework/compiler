@@ -1,4 +1,5 @@
 import {TypeSchema} from "./TypeSchema";
+import {NamedSchema} from "../context/annotations/NamedSchema";
 
 enum KIND {
 	STRING = "STRING",
@@ -19,6 +20,7 @@ enum KIND {
 	REFERENCED = "REFERENCED"
 }
 
+@NamedSchema
 export class PlainTypeScheme extends TypeSchema {
 	static KIND = KIND;
 	kind: KIND;
