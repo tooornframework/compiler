@@ -3,20 +3,24 @@
     "module": "commonjs",
     "target": "es5",
     "sourceMap": true,
-    "outDir": "./build",
+    "outDir": "./build/collector/types",
     "skipLibCheck": true,
     "allowJs": true,
+    "emitDeclarationOnly": true,
+    "declaration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "baseUrl": "./modules",
     "paths": {
       "common/*": ["./common/*"],
       "collector/*": ["./collector/*"],
-      "client/*": ["./client/*"],
       "*": ["*"]
     }
   },
-
+  "include": [
+    "./modules/collector/**/*.ts",
+    "./modules/common/**/*.ts"
+  ],
   "exclude": [
     "build",
     "resources"
