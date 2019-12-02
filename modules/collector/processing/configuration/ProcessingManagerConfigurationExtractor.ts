@@ -1,7 +1,8 @@
 import {ProcessingManagerConfiguration} from "collector/processing/configuration/ProcessingManagerConfiguration";
 import {AbstractSchemaRepository} from "common/repository/schema/AbstractSchemaRepository";
 import {AbstractQualifierRecognizer} from "common/qualifier/recognizer/AbstractQualifierRecognizer";
-import {ReferenceFactory} from "common/misc/reference/factory/ReferenceFactory";
+import {AbstractReferenceFactory} from "common/misc/reference/factory/AbstractReferenceFactory";
+import {AbstractExpansionResolver} from "collector/processing/expansion/AbstractExpansionResolver";
 
 export class ProcessingManagerConfigurationExtractor extends ProcessingManagerConfiguration {
 
@@ -13,8 +14,11 @@ export class ProcessingManagerConfigurationExtractor extends ProcessingManagerCo
         return this._recognizer;
     }
 
-    public getFactory(): ReferenceFactory {
+    public getReferenceFactory(): AbstractReferenceFactory {
         return this._factory;
     }
 
+    public getExpansionResolver(): AbstractExpansionResolver {
+        return this._expansionResolver;
+    }
 }

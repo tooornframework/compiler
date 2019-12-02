@@ -2,11 +2,12 @@ import {Qualifier} from "../../qualifier/Qualifier";
 import {notNullOrThrow} from "../utils/LangUtils";
 import {Class} from "../utils/Class";
 import {AbstractReference} from "./AbstractReference";
+import {Schema} from "common/schema/Schema";
 
-export class RegularReference<S> extends AbstractReference<S> {
+export class RegularReference<S extends Schema> extends AbstractReference<S> {
 	private allowedClasses: Array<Class<S>>;
 
-	public constructor(private readonly qualifier: Qualifier, private lookup: (qualifier: Qualifier) => unknown, classes?: Array<Class<S>>) {
+	public constructor(private readonly qualifier: Qualifier, private lookup: (qualifier: Qualifier) => Schema, classes?: Array<Class<S>>) {
 		super();
 		this.allowedClasses =  classes ? [].concat(classes) : [];
 	}

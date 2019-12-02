@@ -1,48 +1,30 @@
 import * as ts from 'typescript';
-import {CodeGenerator} from "../codgen/CodeGenerator";
 import {Inject} from "common/dependencies/annotations/Inject";
-import {LongNodeQualifier} from "collector/misc/qualifier/LongNodeQualifier";
+import {SourceFileEntryPoint} from "collector/entrypoints/SourceFileEntryPoint";
+import {PackagingManager} from "common/packaging/PackagingManager";
+import {StringsRepository} from "common/repository/StringsRepository";
+import {TypescriptNodeCodeGenerator} from "collector/codgen/TypescriptNodeCodeGenerator";
 
 export class TypescriptReflectionCompilerPlugin {
 
     @Inject
-    private codegen: CodeGenerator;
+    private readonly codgen: TypescriptNodeCodeGenerator;
 
     public before(program: ts.Program) {
-        return (context: ts.TransformationContext) => (file: ts.SourceFile) => this.visitNodeAndChildren(file, program, context)
-    }
+        return (context: ts.TransformationContext) => (file: ts.SourceFile) => {
+            const entryPoint = new SourceFileEntryPoint(file.fileName);
 
-    private visitNodeAndChildren(node: ts.Node, program: ts.Program, context: ts.TransformationContext) {
-        return ts.visitEachChild(this.visitNode(node), childNode => this.visitNodeAndChildren(childNode, program, context), context);
-    }
+            const packager = new PackagingManager(
+                StringsRepository.empty(),
+                entryPoint.getReferenceFactory()
+            );
 
-    private visitNode(node: ts.Node) {
-        if (!ts.isClassDeclaration(node)) {
-            return node;
+            const refs = entryPoint.run();
+            const packages = packager.packAll(refs);
+
+            this.codgen.addDeclaration(packages, file, program, context);
+            this.codgen.addReferences(file, program, context);
         }
-
-        const qualifier = new LongNodeQualifier(node);
-
-        const qualifierAsStringLiteral = ts.createStringLiteral(qualifier.sym());
-
-        const call = ts.createCall(
-            ts.createIdentifier(this.codegen.getRefDecorator()),
-            undefined,
-            [qualifierAsStringLiteral]
-        );
-
-        const decorator = ts.createDecorator(call);
-
-        const decorators = (node.decorators || []).concat(decorator);
-
-        return ts.updateClassDeclaration(
-            node,
-            decorators,
-            node.modifiers,
-            node.name,
-            node.typeParameters,
-            node.heritageClauses,
-            node.members
-        );
     }
+
 }

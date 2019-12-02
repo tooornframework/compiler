@@ -2,13 +2,14 @@ import {Package} from "./Package";
 import {Inject} from "../dependencies/annotations/Inject";
 import {PackagersProvider} from "./context/PackagersProvider";
 import {StringsRepository} from "../repository/StringsRepository";
+import {AbstractReferenceFactory} from "common/misc/reference/factory/AbstractReferenceFactory";
 
 export class PackagingManager {
 
 	@Inject
 	private packagersProvider: PackagersProvider;
 
-	public constructor(private stringsRepository: StringsRepository) {
+	public constructor(private stringsRepository: StringsRepository, private refFactory: AbstractReferenceFactory) {
 		const ids = [];
 
 		this.packagersProvider.getAll().forEach(it => {
@@ -25,8 +26,8 @@ export class PackagingManager {
 		return this.stringsRepository;
 	}
 
-	public useStringsRepository(stringsRepository: StringsRepository) {
-		this.stringsRepository = stringsRepository;
+	public getRefFactory() {
+		return this.refFactory;
 	}
 
 	public pack(value: unknown): Package<number, unknown> {

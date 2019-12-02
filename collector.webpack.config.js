@@ -1,9 +1,9 @@
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
-const DtsBundleWebpack = require('dts-bundle-webpack');
 
 module.exports = {
     target: "node",
+    mode: "development",
     module: {
         rules: [
             {
@@ -22,6 +22,7 @@ module.exports = {
     },
     entry: './modules/collector/Collector.ts',
     output: {
+        pathinfo: true,
         libraryTarget: "commonjs",
         path: __dirname + "/build/collector",
         filename: "index.js"

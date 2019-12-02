@@ -7,25 +7,21 @@ import * as Path from "path";
 import * as AppRoot from "app-root-path";
 
 @Service
-export class CodeGenerator {
+export class StringCodeGenerator {
 
 	@Inject
 	private readonly bridge: ReflectionBridge;
 
 	public createPackagesDefinition(packages: Array<object>) {
 		const stringifierPackages = JSON.stringify(packages);
-		return this.bridge.getReflectionDefinitionImportCode(stringifierPackages);
+		return this.bridge.getReflectionDefinitionIdentifier() + "(" + stringifierPackages + ")";
 
 	}
 
 	public createStringsDefinition(stringsRepository: Json) {
 		const stringifierPackages = JSON.stringify(stringsRepository);
-		return this.bridge.getReflectionStringsRepositoryDefinitionImportCode(stringifierPackages);
+		return this.bridge.getReflectionStringsRepositoryIdentifier() + "(" + stringifierPackages + ")";
 
-	}
-
-	public getRefDecorator() {
-		return this.bridge.getReflectionReferenceImportCode();
 	}
 
 	public getRVC() {

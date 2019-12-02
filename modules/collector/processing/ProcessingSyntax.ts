@@ -1,8 +1,9 @@
 import {NoArgsConstructorClass} from "common/misc/utils/Class";
 import {AbstractReference} from "common/misc/reference/AbstractReference";
+import {Schema} from "common/schema/Schema";
 
-export class ProcessingSyntax<S> {
-	public static for(executor: (Class: Array<NoArgsConstructorClass<any>>, value: any) => AbstractReference<any>): ProcessingSyntax<never> {
+export class ProcessingSyntax<S extends Schema> {
+	public static for(executor: (Class: Array<NoArgsConstructorClass<Schema>>, value: any) => AbstractReference<Schema>): ProcessingSyntax<never> {
 		return new ProcessingSyntax(executor) as ProcessingSyntax<never>;
 	}
 
@@ -39,7 +40,7 @@ export class ProcessingSyntax<S> {
 		return this.all(values.filter(filter))
 	};
 
-	public as<N>(Clazz: NoArgsConstructorClass<N>): ProcessingSyntax<N | S> {
+	public as<N extends Schema>(Clazz: NoArgsConstructorClass<N>): ProcessingSyntax<N | S> {
 		return new ProcessingSyntax(this.executor, this.currentClasses.concat(Clazz));
 	}
 

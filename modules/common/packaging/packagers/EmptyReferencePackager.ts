@@ -1,13 +1,12 @@
 import {AbstractPackager} from "../AbstractPackager";
 import {AbstractReference} from "../../misc/reference/AbstractReference";
-import {EmptyRefernce} from "../../misc/reference/EmptyRefernce";
 import {EmptyReferencePackage} from "../package/EmptyReferencePackage";
 import {Packager} from "../context/annotations/Packager";
 
 @Packager
 export class EmptyReferencePackager extends AbstractPackager<AbstractReference<unknown>, EmptyReferencePackage> {
 	public unpack(): AbstractReference<unknown> {
-		return new EmptyRefernce();
+		return this.getManager().getRefFactory().empty();
 	}
 
 	public toPackedValue(value: AbstractReference<unknown>): number {

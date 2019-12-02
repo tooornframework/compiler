@@ -1,18 +1,13 @@
-import {Project} from "ts-morph";
-import {SourceFileEntryPoint} from "collector/entrypoints/SourceFileEntryPoint";
-import {PackagingManager} from "common/packaging/PackagingManager";
-import {CodeGenerator} from "collector/codgen/CodeGenerator";
+import {StringCodeGenerator} from "collector/codgen/StringCodeGenerator";
 import {Compiler } from "webpack";
 import {Inject} from "common/dependencies/annotations/Inject";
-import {StringsRepository} from "common/repository/StringsRepository";
-import {UniqSimpleSchemaRepository} from "common/repository/schema/FileSeparatedSchemaRepository";
 import { compilation } from "webpack";
 import {TypescriptReflectionCompilerPlugin} from "collector/integration/TypescriptReflectionCompilerPlugin";
 import { RawSource } from "webpack-sources";
 
 export class TypescriptReflectionCollectorWebpackPlugin {
 
-	private static REFLECTION_PLUGIN_NAME = "REFLECTION_PLUGIN_NAME";
+	private static REFLECTION_PLUGIN_NAME = "REFLECTION_PLUGIN";
 
 	public static createWebpackLoader(loaderName: string) {
 		const compilerPlugin = new TypescriptReflectionCompilerPlugin();
@@ -32,17 +27,15 @@ export class TypescriptReflectionCollectorWebpackPlugin {
 	}
 
 	@Inject
-	private codgen: CodeGenerator;
+	private codgen: StringCodeGenerator;
 
-	private project = new Project({
-		tsConfigFilePath: "./tsconfig.json"
-	});
 
 	public apply(compiler: Compiler) {
 		this.tapOptimizeChunkAssets(compiler, (compilation, chunks) => {
 			if (!this.isMainCompiler(compilation.compiler)) {
 				return;
 			}
+
 			const mainChunk = this.findMainChunk(chunks);
 			const metadataFilename = this.getMetadataFilename();
 			compilation.assets[metadataFilename] = new RawSource(this.getSource());
@@ -65,29 +58,9 @@ export class TypescriptReflectionCollectorWebpackPlugin {
 
 
 	private getSource(): string {
-		const entryPoint = this.getEntryPoint();
-		const packagingManager = this.getPackagingManager();
-
-		this.project.getSourceFiles().forEach((sf) => {
-			entryPoint.start(sf);
-		});
-
-		const schemas = entryPoint.getRepository().values();
-		const packages = packagingManager.packAll(schemas);
-
-		const packagesDefs = this.codgen.createPackagesDefinition(packages);
-		const names = this.codgen.createStringsDefinition(packagingManager.getStringsRepository().toJson());
 		const rvc = this.codgen.getRVC();
 
-		return this.codgen.separateToSeveralLines(rvc, names, packagesDefs);
-	}
-
-	private getEntryPoint() {
-		return new SourceFileEntryPoint(this.project, new UniqSimpleSchemaRepository());
-	}
-
-	private getPackagingManager() {
-		return new PackagingManager(StringsRepository.empty());
+		return this.codgen.separateToSeveralLines(rvc);
 	}
 
 	private isMainChunkName(name: string): boolean {

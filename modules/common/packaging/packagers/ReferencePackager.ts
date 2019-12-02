@@ -1,28 +1,30 @@
 import {AbstractPackager} from "../AbstractPackager";
 import {AbstractReference} from "../../misc/reference/AbstractReference";
 import {ReferencePackage} from "../package/ReferencePackage";
-import {RegularReference} from "../../misc/reference/RegularReference";
 import {RecycledQualifier} from "../../qualifier/RecycledQualifier";
 
 import {Packager} from "../context/annotations/Packager";
+import {Schema} from "common/schema/Schema";
 
 @Packager
-export class ReferencePackager extends AbstractPackager<AbstractReference<unknown>, ReferencePackage> {
+export class ReferencePackager extends AbstractPackager<AbstractReference<Schema>, ReferencePackage> {
 
+	public unpack(pkg: ReferencePackage): AbstractReference<Schema> {
+		const symbol = this.getManager().getStringsRepository().find(pkg.v);
+		const qualifier = new RecycledQualifier(symbol);
 
-	public unpack(pkg: ReferencePackage): AbstractReference<unknown> {
-		const qualifier = new RecycledQualifier(this.getManager().getStringsRepository().find(pkg.v));
-
-		return new RegularReference(qualifier, () => {
-			throw new Error("References search is not implemented now");
-		});
+		return this.getManager()
+			.getRefFactory()
+			.from(qualifier, Array.of(Schema));
 	}
 
-	public toPackedValue(value: AbstractReference<unknown>): number {
-		return this.getManager().getStringsRepository().define(value.getQualifier().sym());
+	public toPackedValue(value: AbstractReference<Schema>): number {
+		return this.getManager()
+			.getStringsRepository()
+			.define(value.getQualifier().sym());
 	}
 
-	public matchUnpacked(value: unknown): value is AbstractReference<unknown> {
+	public matchUnpacked(value: unknown): value is AbstractReference<Schema> {
 		return value instanceof AbstractReference && !value.isEmpty();
 	}
 
